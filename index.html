@@ -2,26 +2,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Matejko</title>
 </head>
 <body>
-<h1>Hello darkness, my old friend</h1>
+<form action="" id="login">
+    <label for="nazwa">Podaj email: </label>
+    <input type="text" id="email">
+    <label for="haslo">Podaj haslo: </label>
+    <input type="password" id="haslo">
+</form>
+<button id="zaloguj">Zaloguj</button>
+<button id="zarejestruj">Zarejestruj</button>
+<button id="wyloguj">Wyloguj</button>
+<span id="logowanieInfo"></span>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
 
+<script src="./public/js/firebase.js"></script>
+<script src="./public/js/auth.js"></script>
 <script>
-    //Tutaj wrzucam, pozniej moze zmienie - ogolnie nie ruszac zeby dzialalo xD
-  var firebaseConfig = {
-    apiKey: "AIzaSyCmvJpt1pZ7-vExILBEmrYiM41CVow9luA",
-    authDomain: "projekt-zespolowy-pcz.firebaseapp.com",
-    projectId: "projekt-zespolowy-pcz",
-    storageBucket: "projekt-zespolowy-pcz.appspot.com",
-    messagingSenderId: "499165190463",
-    appId: "1:499165190463:web:7a7757a49cabfd1238db8a"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+    const loginFormularz = document.querySelector("form#login");
+    const logowanieInfoSpan = document.querySelector("span#logowanieInfo");
+    const zalogujBtn = document.querySelector("button#zaloguj");
+    const zarejestrujBtn = document.querySelector("button#zarejestruj");
+    const wylogujBtn = document.querySelector("button#wyloguj");
 
+    zalogujBtn.addEventListener("click", otworzModal);
+    zarejestrujBtn.addEventListener("click", obsluzRejestracje);
+    wylogujBtn.addEventListener("click", obsluzWylogowanie);
+
+    function obsluzLogowanie(zdarzenie){
+        const email = loginFormularz["email"].value;
+        const haslo = loginFormularz["haslo"].value;
+        let bladWalidacji = "";
+        if(!walidujEmail(email) || !walidujHaslo(email, 8)) { bladWalidacji = " Nieprawidlowy adres email lub haslo. "; }
+        logowanieInfoSpan.innerHTML = bladWalidacji;
+        if(bladWalidacji.length === 0) zalogujUzytkownika(email, haslo);
+    }
+
+    function obsluzRejestracje(zdarzenie){
+        const email = loginFormularz["email"].value;
+        const haslo = loginFormularz["haslo"].value;
+        let bladWalidacji = "";
+        if(!walidujEmail(email)) { bladWalidacji = " Nieprawidlowy adres email lub haslo. "; }
+        if(!walidujHaslo(email, 8)) { bladWalidacji += " Haslo jest za krotkie! "; }
+        logowanieInfoSpan.innerHTML = bladWalidacji;
+        if(bladWalidacji.length === 0) zarejestrujUzytkownika(email, haslo);
+    }
+
+    function obsluzWylogowanie(zdarzenie){
+        wylogujUzytkownika();
+    }
 
 </script>
 </body>
