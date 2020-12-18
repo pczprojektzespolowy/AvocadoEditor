@@ -2,19 +2,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matejko</title>
+    <title>Avocado Editor</title>
+    <style>
+        body{
+            font-family: Lato;
+        }
+        form{
+            padding: 3px;
+            border: 1px solid;
+        }
+        form > *{
+            display: block;
+            margin: 2px;
+        }
+        .form-title{
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+        .form-info{
+            min-height: 1em;
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <form action="" id="login">
-    <label for="nazwa">Podaj email: </label>
-    <input type="text" id="email">
-    <label for="haslo">Podaj haslo: </label>
-    <input type="password" id="haslo">
+    <p class="form-title">Zaloguj: </p>
+    <label for="loginEmail">Email: </label>
+    <input type="text" id="loginEmail" autocomplete="email">
+    <label for="loginHaslo">Haslo: </label>
+    <input type="password" id="loginHaslo" autocomplete="current-password">
+    <span id="loginInfo" class="form-info"></span>
+    <button type="submit">Zaloguj</button>
 </form>
-<button id="zaloguj">Zaloguj</button>
-<button id="zarejestruj">Zarejestruj</button>
-<button id="wyloguj">Wyloguj</button>
-<span id="logowanieInfo"></span>
+<form action="" id="rejestracja">
+    <p class="form-title">Zarejestruj: </p>
+    <label for="rejestracjaNazwa">Nazwa użytkownika: </label>
+    <input type="text" id="rejestracjaNazwa" autocomplete="username">
+    <label for="rejestracjaEmail">Email: </label>
+    <input type="text" id="rejestracjaEmail" autocomplete="email">
+    <label for="rejestracjaHaslo">Haslo: ( min. 8 znaków )</label>
+    <input type="password" id="rejestracjaHaslo" autocomplete="new-password">
+    <label for="rejestracjaHasloPowtorz">Powtorz haslo: </label>
+    <input type="password" id="rejestracjaHasloPowtorz" autocomplete="new-password">
+    <span id="rejestracjaInfo" class="form-info"></span>
+    <button type="submit">Zarejestruj</button>
+</form>
+
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
 
@@ -22,36 +56,31 @@
 <script src="./public/js/auth.js"></script>
 <script>
     const loginFormularz = document.querySelector("form#login");
-    const logowanieInfoSpan = document.querySelector("span#logowanieInfo");
-    const zalogujBtn = document.querySelector("button#zaloguj");
-    const zarejestrujBtn = document.querySelector("button#zarejestruj");
-    const wylogujBtn = document.querySelector("button#wyloguj");
+    const rejestracjaFormularz = document.querySelector("form#rejestracja");
 
-    zalogujBtn.addEventListener("click", otworzModal);
-    zarejestrujBtn.addEventListener("click", obsluzRejestracje);
-    wylogujBtn.addEventListener("click", obsluzWylogowanie);
+    loginFormularz.addEventListener("submit", obsluzLogowanie);
+    rejestracjaFormularz.addEventListener("submit", obsluzRejestracje);
 
-    function obsluzLogowanie(zdarzenie){
-        const email = loginFormularz["email"].value;
-        const haslo = loginFormularz["haslo"].value;
-        let bladWalidacji = "";
-        if(!walidujEmail(email) || !walidujHaslo(email, 8)) { bladWalidacji = " Nieprawidlowy adres email lub haslo. "; }
-        logowanieInfoSpan.innerHTML = bladWalidacji;
-        if(bladWalidacji.length === 0) zalogujUzytkownika(email, haslo);
+    async function obsluzLogowanie(zdarzenie){
+        zdarzenie.preventDefault();
+        const cel = zdarzenie.target;
+        const email = cel.querySelector("#loginEmail").value;
+        const haslo = cel.querySelector("#loginHaslo").value;
+        const infoEl = cel.querySelector("#loginInfo");
+        const info = await zalogujUzytkownika(email, haslo);
+        infoEl.innerHTML = info;
     }
 
-    function obsluzRejestracje(zdarzenie){
-        const email = loginFormularz["email"].value;
-        const haslo = loginFormularz["haslo"].value;
-        let bladWalidacji = "";
-        if(!walidujEmail(email)) { bladWalidacji = " Nieprawidlowy adres email lub haslo. "; }
-        if(!walidujHaslo(email, 8)) { bladWalidacji += " Haslo jest za krotkie! "; }
-        logowanieInfoSpan.innerHTML = bladWalidacji;
-        if(bladWalidacji.length === 0) zarejestrujUzytkownika(email, haslo);
-    }
-
-    function obsluzWylogowanie(zdarzenie){
-        wylogujUzytkownika();
+    async function obsluzRejestracje(zdarzenie){
+        zdarzenie.preventDefault();
+        const cel = zdarzenie.target;
+        const nazwa = cel.querySelector("#rejestracjaNazwa").value;
+        const email = cel.querySelector("#rejestracjaEmail").value;
+        const haslo = cel.querySelector("#rejestracjaHaslo").value;
+        const haslo2 = cel.querySelector("#rejestracjaHasloPowtorz").value;
+        const infoEl = cel.querySelector("#rejestracjaInfo");
+        let walidacja = walidujRejestracje(nazwa, email, haslo, haslo2).filter(blad => blad.length > 0);
+        infoEl.innerHTML = walidacja.length === 0 ? await zarejestrujUzytkownika(nazwa, email, haslo, haslo2) : walidacja.join("<br />");
     }
 
 </script>
