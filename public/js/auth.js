@@ -19,7 +19,7 @@ async function zarejestrujUzytkownika(nazwa, email, haslo, haslo2){
                 displayName: nazwa,
             });
             firebase.auth().signOut();
-            return { message: "Uzytkownik utworzony pomyslnie. Prosimy o potwierdzenie adresu email."}
+            return { message: "User created successfully. Please confirm your email address."}
         }).catch(blad => blad.message);
     return info;
 }
@@ -28,7 +28,7 @@ async function zalogujUzytkownika(email, haslo){
     const info = await firebase.auth().signInWithEmailAndPassword(email, haslo).then(uzytkownik => {
             if(!uzytkownik.user.emailVerified) {
                 uzytkownik.user.sendEmailVerification();
-                throw Error("Potwierdz adres email!");
+                throw Error("Confirm your email address!");
             }
             window.location.assign("/projects.html");
         }).catch(blad => blad.message);
@@ -45,9 +45,9 @@ function wylogujUzytkownika(){
 
 // WALIDACJA
     function walidujRejestracje(nazwa, email, haslo, haslo2){
-        const nazwaInfo = walidujNazwe(nazwa, 1) ? "" : "Nazwa niepoprawna.";
-        const emailInfo = walidujEmail(email) ? "" : "Email niepoprawny.";
-        const hasloInfo = walidujHaslo(haslo, haslo2, 8) ? "" : "Hasla powinno zawierac 8 znakow oraz byc jednakowe.";
+        const nazwaInfo = walidujNazwe(nazwa, 1) ? "" : "Invalid username.";
+        const emailInfo = walidujEmail(email) ? "" : "Invalid email address.";
+        const hasloInfo = walidujHaslo(haslo, haslo2, 8) ? "" : "Passwords should match and be 8 char long.";
         return [
             nazwaInfo,
             emailInfo,
