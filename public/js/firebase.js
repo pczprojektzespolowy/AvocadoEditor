@@ -1,5 +1,4 @@
-    //Tutaj wrzucam, pozniej moze zmienie - ogolnie nie ruszac zeby dzialalo xD
-  var firebaseConfig = {
+  const firebaseConfig = {
     apiKey: "AIzaSyCmvJpt1pZ7-vExILBEmrYiM41CVow9luA",
     authDomain: "projekt-zespolowy-pcz.firebaseapp.com",
     projectId: "projekt-zespolowy-pcz",
