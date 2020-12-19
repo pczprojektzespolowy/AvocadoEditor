@@ -10,7 +10,7 @@ firebase.auth().onAuthStateChanged(user => {
     if(user === null) przekierujDo("/");
   });
 
-async function zarejestrujUzytkownika(nazwa, email, haslo, haslo2){
+async function zarejestrujUzytkownika(nazwa, email, haslo){
     const info = await firebase.auth().createUserWithEmailAndPassword(email, haslo)
         .then((_) => {
             const uzytkownik = firebase.auth().currentUser;
@@ -19,7 +19,7 @@ async function zarejestrujUzytkownika(nazwa, email, haslo, haslo2){
                 displayName: nazwa,
             });
             firebase.auth().signOut();
-            return { message: "User created successfully. Please confirm your email address."}
+            return "User created successfully. Please confirm your email address.";
         }).catch(blad => blad.message);
     return info;
 }
