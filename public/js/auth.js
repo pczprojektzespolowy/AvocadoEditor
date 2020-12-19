@@ -3,7 +3,7 @@
 //SESJA
 //Przekieruj jezeli brak uzytkownika
 function przekierujDo(path){
-    if(window.location.pathname !== path)window.location.replace(path);
+    if(window.location.pathname !== path) window.location.replace(path);
 }
 firebase.auth().onAuthStateChanged(user => {
     firebase.auth().useDeviceLanguage();
