@@ -1,3 +1,0 @@
-function pobierzProjekty(uzytkownikId){
-    
-}
