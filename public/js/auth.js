@@ -7,7 +7,7 @@ function przekierujDo(path){
 }
 firebase.auth().onAuthStateChanged(user => {
     firebase.auth().useDeviceLanguage();
-    if(user === null) przekierujDo("/AvocadoEditor/");
+    if(user === null) przekierujDo("/");
   });
 
 async function zarejestrujUzytkownika(nazwa, email, haslo){
