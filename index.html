@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+    <title>Edytor</title>
+</head>
+
+<body>
+    <div id="lewy">
+        <button onClick="toggleMode(modes.pan)">Toggle Pan</button><br>
+        <button onClick='toggleMode(modes.drawing)'>Toggle Drawing</button>
+
+        <input id='colorPicker' value="#000000" data-jscolor="{}">
+        <button onClick='clearCanvas(canvas, svgState)'>Clear</button>
+        <button onClick='restoreCanvas(canvas, svgState, bgUrl)'>Restor</button>
+
+        <div class="objectButtonsWrapper">
+            <p class="objectsTitle">Objects</p>
+            <div class="objectButtons">
+                <button onClick="createRect(canvas)">Rect</button>
+                <button onClick="createCirc(canvas)">Circ</button>
+            </div>
+            <button onClick="groupObjects(canvas,group,true)">Group</button>
+            <button onClick="groupObjects(canvas,group,false)">Ungroup</button>
+        </div>
+
+        <div class="objectButtonsWrapper">
+            <p class="objectsTitle">Objects</p>
+            <input id="myImage" type="file" accept="image/*">
+        </div>
+    </div>
+
+    <div id="prawy">
+        <canvas id='workspace'></canvas>
+    </div>
+
+    <script src="lib/jscolor.js"></script>
+    <script src="lib/fabric.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
