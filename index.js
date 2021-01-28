@@ -3,8 +3,7 @@ console.log('working')
 const initCanvas = (id) => {
     return new fabric.Canvas(id, {
         width: window.innerWidth * 0.8,
-        height: window.innerHeight,
-        selection: false
+        height: window.innerHeight
     });
 }
 
@@ -19,15 +18,18 @@ const toggleMode = (mode) => {
 
     if (mode === modes.pan) {
         if (currentMode === modes.pan) {
+            canvas.selection = true
             currentMode = ''
         } else {
             currentMode = modes.pan
+            canvas.selection = false
             canvas.isDrawingMode = false;
             canvas.renderAll()
         }
     } else if (mode === modes.drawing) {
         if (currentMode === modes.drawing) {
             currentMode = ''
+            canvas.selection = true
             canvas.isDrawingMode = false;
             canvas.renderAll()
         } else {
@@ -78,6 +80,16 @@ const setColorListner = () => {
     })
 }
 
+const setWidthListner = () => {
+    const picker = document.getElementById('brush')
+    picker.addEventListener('change', (event) => {
+        console.log(event.target.value)
+        color = event.target.value
+        canvas.freeDrawingBrush.width = color
+        canvas.renderAll()
+    })
+}
+
 const clearCanvas = (canvas, state) => {
     state.val = canvas.toSVG()
     canvas.getObjects().forEach((o) => {
@@ -114,12 +126,12 @@ const createRect = (canvas) => {
     canvas.add(rect)
     canvas.requestRenderAll()
     rect.on('selected', () => {
-        rect.set('fill', 'white')
-        canvas.requestRenderAll()
+        //rect.set('fill', 'white')
+        //canvas.requestRenderAll()
     })
     rect.on('deselected', () => {
-        rect.set('fill', rectColor)
-        canvas.requestRenderAll()
+        //rect.set('fill', rectColor)
+        //canvas.requestRenderAll()
     })
 }
 
@@ -139,12 +151,12 @@ const createCirc = (canvas) => {
     canvas.add(circle)
     canvas.requestRenderAll()
     circle.on('selected', () => {
-        circle.set('fill', 'white')
-        canvas.requestRenderAll()
+        //circle.set('fill', 'white')
+        //canvas.requestRenderAll()
     })
     circle.on('deselected', () => {
-        circle.set('fill', circleColor)
-        canvas.requestRenderAll()
+        //circle.set('fill', circleColor)
+       //canvas.requestRenderAll()
     })
 }
 
@@ -187,14 +199,25 @@ const modes = {
 
 const reader = new FileReader()
 
-setBackground(bgUrl, canvas)
-
 setPanEvents(canvas)
 
 setColorListner()
+setWidthListner()
+
+var imageSaver = document.getElementById('lnkDownload');
+imageSaver.addEventListener('click', saveImage, false);
+
+function saveImage(e) {
+    this.href = canvas.toDataURL({
+        format: 'png',
+        quality: 0.8
+    });
+    this.download = 'canvas.png'
+}
 
 const inputFile = document.getElementById('myImage');
 inputFile.addEventListener('change', imgAdded)
+
 reader.addEventListener('load', () => {
     console.log(reader.result)
     fabric.Image.fromURL(reader.result, img => {

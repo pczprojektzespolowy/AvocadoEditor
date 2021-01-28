@@ -21,9 +21,10 @@ body{
 
 .objectButtonsWrapper{
     background-color: grey;
-    width: 100px;
+    width: 200px;
     padding: 5px;
     border-radius: 10px;
+    margin-left: 20px;
     margin-top: 20px ;
     display: flex;
     flex-direction: column;

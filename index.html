@@ -10,12 +10,25 @@
 
 <body>
     <div id="lewy">
-        <button onClick="toggleMode(modes.pan)">Toggle Pan</button><br>
-        <button onClick='toggleMode(modes.drawing)'>Toggle Drawing</button>
+        <div class="objectButtonsWrapper">
+            <div class="objectButtons">
+                <button onClick="toggleMode(modes.pan)">Toggle Pan</button>
+                <button onClick='toggleMode(modes.drawing)'>Toggle Drawing</button>
+            </div>
+            <p>
+                Wybierz kolor: 
+                <input id='colorPicker' type="color">
+            </p>
+            <p>
+                Grubość pędzla: 
+                <input id='brush' type="number" value="2" >
+            </p>
+            <div class="objectButtons">
+                <button onClick='clearCanvas(canvas, svgState)'>Clear</button>
+                <button onClick='restoreCanvas(canvas, svgState, bgUrl)'>Restor</button>
+            </div>
+        </div>
 
-        <input id='colorPicker' value="#000000" data-jscolor="{}">
-        <button onClick='clearCanvas(canvas, svgState)'>Clear</button>
-        <button onClick='restoreCanvas(canvas, svgState, bgUrl)'>Restor</button>
 
         <div class="objectButtonsWrapper">
             <p class="objectsTitle">Objects</p>
@@ -28,17 +41,17 @@
         </div>
 
         <div class="objectButtonsWrapper">
-            <p class="objectsTitle">Objects</p>
+            <p class="objectsTitle">Pliki</p>
             <input id="myImage" type="file" accept="image/*">
+            <a id="lnkDownload" href="#">Save image</a>
         </div>
     </div>
 
     <div id="prawy">
         <canvas id='workspace'></canvas>
     </div>
-
-    <script src="lib/jscolor.js"></script>
     <script src="lib/fabric.min.js"></script>
+
     <script src="index.js"></script>
 </body>
 
