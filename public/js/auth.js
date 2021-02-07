@@ -1,16 +1,5 @@
-//Importuj po deklaracji firebase
-
 //SESJA
-//Przekieruj jezeli brak uzytkownika
-function przekierujDo(path){
-    if(window.location.pathname !== path) window.location.replace(path);
-}
-firebase.auth().onAuthStateChanged(user => {
-    firebase.auth().useDeviceLanguage();
-    if(user === null) przekierujDo("/");
-  });
-
-async function zarejestrujUzytkownika(nazwa, email, haslo){
+export async function zarejestrujUzytkownika(nazwa, email, haslo){
     const info = await firebase.auth().createUserWithEmailAndPassword(email, haslo)
         .then((_) => {
             const uzytkownik = firebase.auth().currentUser;
@@ -24,18 +13,19 @@ async function zarejestrujUzytkownika(nazwa, email, haslo){
     return info;
 }
 
-async function zalogujUzytkownika(email, haslo){
+export async function zalogujUzytkownika(email, haslo){
     const info = await firebase.auth().signInWithEmailAndPassword(email, haslo).then(uzytkownik => {
             if(!uzytkownik.user.emailVerified) {
                 uzytkownik.user.sendEmailVerification();
                 throw Error("Confirm your email address!");
             }
             window.location.assign("/projects.html");
+            return "";
         }).catch(blad => blad.message);
     return info;
 }
 
-function wylogujUzytkownika(){
+export function wylogujUzytkownika(){
     firebase.auth().signOut()
         .then(() => {
             window.location.assign("/");
@@ -44,7 +34,7 @@ function wylogujUzytkownika(){
 }
 
 // WALIDACJA
-    function walidujRejestracje(nazwa, email, haslo, haslo2){
+export function walidujRejestracje(nazwa, email, haslo, haslo2){
         const nazwaInfo = walidujNazwe(nazwa, 1) ? "" : "Invalid username.";
         const emailInfo = walidujEmail(email) ? "" : "Invalid email address.";
         const hasloInfo = walidujHaslo(haslo, haslo2, 8) ? "" : "Passwords should match and be 8 char long.";
@@ -54,13 +44,13 @@ function wylogujUzytkownika(){
             hasloInfo,
         ];
     }
-    function walidujNazwe(nazwa, dlugosc){
+export function walidujNazwe(nazwa, dlugosc){
         return nazwa.length >= dlugosc;
     }
-    function walidujEmail(email){
+export function walidujEmail(email){
         const kawalki = email.split("@");
         return kawalki.length > 1 && kawalki[kawalki.length - 2].length > 0 && kawalki[kawalki.length-1].indexOf(".") !== -1;
     }
-    function walidujHaslo(haslo, haslo2, dlugosc){
+export function walidujHaslo(haslo, haslo2, dlugosc){
         return haslo.length >= dlugosc && haslo === haslo2;
     }

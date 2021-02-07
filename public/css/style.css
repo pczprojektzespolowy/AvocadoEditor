@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +8,13 @@
 body {
     min-height: 100vh;
     min-width: 100vw;
-    overflow: hidden;
+}
+.error{
+    color: red;
+}
+a {
+    color: green;
+    cursor: pointer;
 }
 
 .container {

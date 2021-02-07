@@ -36,9 +36,7 @@
                 <button type="submit">Get in!</button>
             </form>
         </div>
-
     </div>
-
     <div class="modalUp">
         <div class="modalWrapper">
             <h1>Sign Up</h1>
@@ -57,44 +55,11 @@
         </div>
     </div>
 </div>
-<div class="splash "> </div>
-
+<div class="splash "></div>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
-
-<script src="./js/firebase.js"></script>
-<script src="./js/auth.js"></script>
+<script src="./landing.js" type="module"></script>
 <script src="./js/view.js"></script>
-<script>
-    const loginFormularz = document.querySelector("form#login");
-    const rejestracjaFormularz = document.querySelector("form#rejestracja");
-
-    loginFormularz.addEventListener("submit", obsluzLogowanie);
-    rejestracjaFormularz.addEventListener("submit", obsluzRejestracje);
-
-    async function obsluzLogowanie(zdarzenie){
-        zdarzenie.preventDefault();
-        const cel = zdarzenie.target;
-        const email = cel.querySelector("#loginEmail").value;
-        const haslo = cel.querySelector("#loginHaslo").value;
-        const infoEl = cel.querySelector("#loginInfo");
-        const info = await zalogujUzytkownika(email, haslo);
-        infoEl.innerHTML = info;
-    }
-
-    async function obsluzRejestracje(zdarzenie){
-        zdarzenie.preventDefault();
-        const cel = zdarzenie.target;
-        const nazwa = cel.querySelector("#rejestracjaNazwa").value;
-        const email = cel.querySelector("#rejestracjaEmail").value;
-        const haslo = cel.querySelector("#rejestracjaHaslo").value;
-        const haslo2 = cel.querySelector("#rejestracjaHasloPowtorz").value;
-        const infoEl = cel.querySelector("#rejestracjaInfo");
-        let walidacja = walidujRejestracje(nazwa, email, haslo, haslo2).filter(blad => blad.length > 0);
-        infoEl.innerHTML = walidacja.length === 0 ? await zarejestrujUzytkownika(nazwa, email, haslo) : walidacja.join("<br />");
-    }
-
-</script>
 </body>
 </body>
 </html>
