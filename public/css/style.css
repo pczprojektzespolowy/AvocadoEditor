@@ -12,6 +12,7 @@ body {
   min-width: 100vw;
   max-width: 100vh;
   max-height: 100vh;
+  overflow-x: hidden;
 }
 .error {
   color: red;

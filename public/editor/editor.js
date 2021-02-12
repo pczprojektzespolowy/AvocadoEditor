@@ -1,6 +1,7 @@
 import { init, redirect } from "../js/firebase.js";
 import { wylogujUzytkownika } from "../js/auth.js";
 import { getProjectsList, getProject, updateProject } from "../js/storage.js";
+import { exportPaintingToBase64, fileToBase64 } from "../js/utils.js";
 
 const state = {
     pid: localStorage.getItem("pid"),
@@ -14,13 +15,14 @@ const onAuth = {
         const {pid} = state;
         if(pid){
             const projectJSON = await getProject(pid);
-            c.loadFromJSON(projectJSON, c.renderAll.bind(c));
+            console.log(projectJSON);
+            canvas.loadFromJSON(projectJSON, canvas.renderAll.bind(canvas));
             pidInput.value = pid;
             pidInput.disabled = true;
         } else {
             //New project
             const circle = new fabric.Circle({radius: 20});
-            c.add(circle);
+            canvas.add(circle);
         }
     },
     once: false,
@@ -39,14 +41,16 @@ init(onAuth, onNonAuth);
 const workSpace = document.querySelector("#workSpace");
 
 const canvasElement = document.querySelector("canvas#cnv");
-canvasElement.width = 60;
-canvasElement.height = 60;
-const saveBtn = document.querySelector("button#save");
-const pidInput = document.querySelector("input#projectID");
-const errorText = document.querySelector("span#error");
-const exportBtn = document.querySelector("#export");
-const avatarImgs = document.querySelectorAll(".avatar");
+//canvasElement.width = 60;
+//canvasElement.height = 60;
+const saveBtn = document.querySelector("#save");
+const pidInput = document.querySelector("#projectID");
+const errorText = document.querySelector("#error");
+const exportLink = document.querySelector("#export");
 const usernameElement = document.querySelector("#username");
+const avatarImgs = document.querySelectorAll(".avatar");
+const body = document.querySelector("body");
+const dropMessage = document.querySelector("#dropMessage");
 
 
 //DOM Props
@@ -54,9 +58,9 @@ const DOM = {
     handleSave: async (e) => {
         const {pid} = state;
         if(!pid){
-            await APP.createProject(state.pidTemp, c);
+            await APP.createProject(state.pidTemp, canvas);
         } else {
-            await updateProject(state.pid, c);
+            await updateProject(state.pid, canvas);
         }
     },
     handlePidInput: (e) => {
@@ -64,28 +68,56 @@ const DOM = {
         state.pidTemp = val;
     },
     handleExport: e => {
-        const data = c.toDataURL();
+        const data = canvas.toDataURL();
         e.target.href = data;
         e.target.download = state.pid || state.pidTemp;
     },
     setError: (err) => {
         errorText.textContent = err;
-     },
-     setUserName: () => {
-         const user = firebase.auth().currentUser
-         if(user.displayName){
-            usernameElement.textContent = user.displayName;
-         }
-     }
+    },     setUserName: () => {
+        const user = firebase.auth().currentUser
+        if(user.displayName){
+           usernameElement.textContent = user.displayName;
+        }
+    },
+    cancelDefault: (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    },
+    showDragMessage: (e) => {
+        DOM.cancelDefault(e)
+        dropMessage.style.display = "block";
+    },
+    hideDragMessage: (e) => {
+        DOM.cancelDefault(e);
+        dropMessage.style.display = "none";
+    },
+    dropFile: async (e) => {
+        DOM.cancelDefault(e);
+        const file = e.dataTransfer.files[0];
+        const b64 = await fileToBase64(file);
+        new fabric.Image.fromURL(b64, img => {
+            canvas.add(img);
+        }, {
+            crossOrigin: "anonymous"
+        })
+    },
+    exportFile: async e => {
+        e.href = exportPaintingToBase64(canvas)
+    }
 };
 
 //DOM Actions
 saveBtn.addEventListener("click", e => DOM.handleSave(e));
 pidInput.addEventListener("change", e => DOM.handlePidInput(e));
-exportBtn.addEventListener("click", e => DOM.handleExport(e));
+exportLink.addEventListener("click", e => DOM.handleExport(e));
+body.addEventListener("dragenter", DOM.showDragMessage);
+body.addEventListener("dragleave", DOM.hideDragMessage);
+body.addEventListener("dragover", DOM.showDragMessage);
+body.addEventListener("drop", DOM.dropFile);
 
-//APP Hooks
-const c = new fabric.Canvas("cnv");
+// //APP Hooks
+// const c = new fabric.Canvas("cnv");
 
 //APP Props 
 const APP = {
@@ -105,21 +137,11 @@ const APP = {
     },
     saveProject: (pid, canvas) => {
         updateProject(pid, canvas);
+    },
+    addPhoto: (file) => {
+        console.log(file);
     }
 };
-
-//Accordion 
-// const accordion = document.querySelectorAll("#accordion .contentBox");
-// console.log(accordion)
-
-// for(let i = 0; i<accordion.length; i++){
-//     accordion[i].addEventListener('click', function(){
-//         this.classList.add('active')
-//     })
-// }
-
-
-
-//Logout - sprawdzic czy to jest poprawnie zrobi - Gitarka zrobione :)
+//Logout - sprawdzic czy to jest poprawnie zrobi
 const loBtn = document.querySelector("#logout");
 loBtn.addEventListener("click", wylogujUzytkownika);
