@@ -3,32 +3,338 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./editor.css">
+    <script src="https://kit.fontawesome.com/bb1feab669.js" crossorigin="anonymous"></script>
     <title>Edit - Avocado Editor</title>
 </head>
 <body>
-    <h3>Editor</h3>
-    <!-- <h4 id="headline">What happened?</h4>
-    <form id="form">
-        <label for="file">Choose a file</label>
-        <input type="file" name="file" id="file" accept=".png, .jpg" />
-        <div id="dropzone" class="dropzone">
-            <p>Or drop it here</p>
+    <div class="container">
+
+        <nav class="navBar">
+            <div class="btns">
+                <button id="save">Save</button>
+                <button>Load photo</button>
+                <button id="export">Export</button>
+                <button id="delete">Delete</button>
+            </div>
+
+            <div class="userPanel">
+                <div class="userImg">
+                    <img id="avatar" class="avatar" src="/img/avatarPlaceholder.png" alt="userImg">
+                </div>
+                <div>
+                    <span class="userName" id="username"></span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="workSpace">
+            <!-- tutaj jest tool bar -->
+            <section class="sideBar">
+
+                <div class="accordion" id="accordion">
+                    <div class="contentBox tools active">
+                        <div class="title">Tools</div>
+                        <div class="content brush">
+                          <datalist id="numbersxx">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                            <option>35</option>
+                            <option>40</option>
+                            <option>45</option>
+                            <option>50</option>
+                        </datalist>
+                            <div class="objectButtonsWrapper one">
+                                <div class="objectButtons">
+                                    <button onClick="toggleMode(modes.pan)"> <i class="fas fa-expand-arrows-alt"></i></button>
+                                    <button onClick='toggleMode(modes.drawing)'> <i class="fas fa-paint-brush"></i></button>
+                                </div>
+                                <div class="brushSize">
+                                    <label for="brush">Brush Size</label> 
+                                    <input id='brush' type="range" value="2" min="1" max="50" list="numbersxx">
+                                </div>
+                                <div class="colorPicker">
+                                    <label for="colorPicker">Color</label>
+                                    <input id='colorPicker' type="color">
+                                </div>
+                                <div class="cnvSize">
+                                    <p class="toolTitle">CANVAS SIZE ???</p>
+                                    <label for="width">Width</label>
+                                    <input id="width">
+                                    <label for="height">Height</label>
+                                    <input id="height">
+                                    <button onClick='canvasResize(canvas)'>Resize</button>
+                                    <button onClick='canvasStartSize(canvas)'>Default size</button>
+                                </div>
+
+                                <div class="objectButtons toolClsRst">
+                                    <button onClick='clearCanvas(canvas, svgState)'>Clear</button>
+                                    <button onClick='restoreCanvas(canvas, svgState, bgUrl)'>Restor</button>
+                                </div>
+                            </div>
+                    
+                    
+                            <div class="objectButtonsWrapper two">
+                                <p class="objectsTitle toolTitle">Objects</p>
+                                <div class="objectButtons">
+                                    <button onClick="createRect(canvas)"><i class="fas fa-square-full"></i></button>
+                                    <button onClick="createCirc(canvas)"><i class="fas fa-circle"></i></button>
+                                </div>
+                                
+                            <div class="addText">
+                                <label for="newText">Text</label> 
+                                <input id="newText">
+                            </div>
+
+                                <button onClick="textAdd(canvas)">Add Text</button>
+                                <button onClick="deleteObject(canvas)">Delate Object</button>
+                                <button onClick="groupObjects(canvas,group,true)">Group</button>
+                                <button onClick="groupObjects(canvas,group,false)">Ungroup</button>
+                            </div>
+                
+                        </div>
+                    </div>
+
+                    <div class="contentBox filters active">
+                        <div class="title ">Filters</div>
+                        <div class="content">
+                            <div>
+                                <div class="controls">
+                                    <div class="filtersContainer">
+                                    <div class="colorMatrix">
+                                        <div>
+                                          <label><span>Grayscale:</span> <input class="filter" type="checkbox" id="grayscale"></label>
+                                      </div>
+                                      <span class="idk">
+                                        <label><span>Avg.</span> <input class="filter" type="radio" id="average" name="grayscale"></label>
+                                        <label><span>Lum.</span> <input class="filter" type="radio" id="lightness" name="grayscale"></label>
+                                        <label><span>Light.</span> <input class="filter" type="radio" id="luminosity" name="grayscale"></label>
+                                      </span>
+
+                                      <div>
+                                        <label><span>Invert Colors</span> <input class="filter" type="checkbox" id="invert"></label>
+                                      </div>
+                                    </div>
+
+                                    
+                                      <p class="toolTitle">Colormatrix filters</p>
+                                      <div class="colorMatrix">
+                                      <div>
+                                         <input class="filter" type="checkbox" id="sepia"> <label for="sepia"><span>Sepia:</span>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="blackwhite"><span>Black/White:</span> <input class="filter" type="checkbox" id="blackwhite"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="brownie"><span>Brownie:</span> <input class="filter" type="checkbox" id="brownie"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="vintage"><span>Vintage:</span> <input class="filter" type="checkbox" id="vintage"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="kodachrome"><span>Kodachrome:</span> <input class="filter" type="checkbox" id="kodachrome"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="technicolor"><span>Technicolor:</span> <input class="filter" type="checkbox" id="technicolor"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="polaroid"><span>Polaroid:</span> <input class="filter" type="checkbox" id="polaroid"></label>
+                                      </div>
+                                    </div>
+                                      <div class="colorMatrix">
+                                        <div>
+                                        <label for="remove-color"><span>Remove color:</span> <input class="filter" type="checkbox" id="remove-color"></label>
+                                      </div>
+                                      
+                                        <input class="filter" type="color" id="remove-color-color" value="#00f900"></label>
+                                        <label for="remove-color-distance">Distance: <input class="filter" type="range" id="remove-color-distance" value="0.02" min="0" max="1" step="0.01"></label>
+                                      
+                                      </div>
+
+
+
+                                      <div class="colorMatrix">
+                                        <label for="gamma"><span>Gamma:</span> <input class="filter" type="checkbox" id="gamma"></label></div>
+                                        <div>
+                                        <label for="gamma-red">Red: <input class="filter" type="range" id="gamma-red" value="1" min="0.2" max="2.2" step="0.003921"></label>
+                                        <label for="gamma-green">Green: <input class="filter" type="range" id="gamma-green" value="1" min="0.2" max="2.2" step="0.003921"></label>
+                                        <label for="gamma-blue">Blue: <input class="filter" type="range" id="gamma-blue" value="1" min="0.2" max="2.2" step="0.003921"></label>
+                                      
+                                      </div>
+                                    <div class="colorMatrix">
+    
+                                      <div >
+                                        <label for="brightness"><span>Brightness:</span> <input class="filter" type="checkbox" id="brightness"></label>
+                                        <input class="" type="range" id="brightness-value" value="0.1" min="-1" max="1" step="0.003921">
+                                      </div>
+
+                                      <div>
+                                        <label for="contrast"><span>Contrast:</span> <input class="filter" type="checkbox" id="contrast"></label>
+                                        <input class="" type="range" id="contrast-value" value="0" min="-1" max="1" step="0.003921">
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="saturation"><span>Saturation:</span> <input class="filter" type="checkbox" id="saturation"></label>
+                                        <input class="" type="range" id="saturation-value" value="0" min="-1" max="1" step="0.003921">
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="hue"><span>Hue:</span> <input class="filter" type="checkbox" id="hue"></label>
+                                        <input class="" type="range" id="hue-value" value="0" min="-2" max="2" step="0.002">
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="noise"><span>Noise:</span> <input class="filter" type="checkbox" id="noise"></label>
+                                        <input class="" type="range" id="noise-value" value="100" min="0" max="1000">
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="pixelate"><span>Pixelate</span> <input class="filter" type="checkbox" id="pixelate"></label>
+                                        <input class="" type="range" id="pixelate-value" value="4" min="2" max="20">
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="blur"><span>Blur:</span> <input class="filter" type="checkbox" id="blur"></label>
+                                        <input class="" type="range" id="blur-value" value="0.1" min="0" max="1" step="0.01">
+                                      </div>
+                                    
+                                    </div>
+                                    <div class="colorMatrix">
+                                      <div>
+                                        <label for="sharpen"><span>Sharpen:</span> <input class="filter" type="checkbox" id="sharpen"></label>
+                                      </div>
+                                    
+                                      <div>
+                                        <label for="emboss"><span>Emboss:</span> <input class="filter" type="checkbox" id="emboss"></label>
+                                      </div>
+                                    
+                                      <div>
+                                      <label for="blend"><span>Blend Color:</span> <input class="filter" type="checkbox" id="blend"></label>
+                                      </div>
+                                    </div>
+                                   </div>
+                                  </div>
+                                  
+                            </div>
+                        </div>
+                        
+                    </div>
+                  
+
+                    <div class="contentBox informations active">
+                        <div class="title ">Informations</div>
+                        <div class="content">
+                            
+                           <table>
+                            <tr>
+                                <td>File name:</td>
+                                <td>Projekt1</td>
+                            </tr>
+                             <tr>
+                                 <td>File type:</td>
+                                 <td>jpg</td>
+                             </tr>
+                              <tr>
+                                 <td></td>
+                             </tr>
+                              <tr>
+                                  <td>File size:</td>
+                                  <td>200kb</td>
+                              </tr>
+                              <tr>
+                                 <td>Resolution:</td>
+                                 <td>200x222</td>
+                             </tr>
+                              <tr>
+                                  <td></td>
+                              </tr>
+                        </table>
+
+                         <button id="export" download="exports">Export to file</button>
+                         <button id="save">Save</button>
+                         <button id="delete">Delete</button>
+                         <input type="text" name="projectID" id="projectID" placeholder="Insert project name...">
+                         <span id="error" class="error"></span>
+                        </div>
+                    </div>
+                </div>
+            
+
+         
+
+                    <!-- <h4 id="headline">What happened?</h4>
+                    <form id="form">
+                    <label for="file">Choose a file</label>
+                    <input type="file" name="file" id="file" accept=".png, .jpg" />
+                    <div id="dropzone" class="dropzone">
+                    <p>Or drop it here</p>
+                    </div>
+                    </form>
+                    <img id="img" src="" alt="Image to be sent" />
+                    <button id="send">Send to storage</button> -->
+            </section>
+
+            <!-- tutaj jest obszar roboczy -->
+            <section class="canvas" id="workSpace">
+                <canvas id="cnv"></canvas>
+        
+
+                <div style="border:1px solid black;">
+                    <h1>nie wiem co z tym zrobić</h1>
+                    <hr>
+                    To kod Michała
+                    <hr>
+                <div class="objectButtonsWrapper three">
+                    <p class="objectsTitle">Pliki</p>
+                    <input id="myImage" type="file" accept="image/*">
+                    <a id="lnkDownload" href="#">Save image</a>
+
+                    <br><br>
+                    <p style="font-weight: bolder;"> ustaw tego WEB GL na sztywno, jeśli nie znajdziesz tej funkcji to zostawimy go w filtrach</p>
+                    <label>Use WebGl<input class="filter" type="checkbox" id="webgl" checked=""></label>
+                    <p style="font-weight: bolder;">nie wiem co to, ale może w INFORMATION można by to użyć w resolution??</p>
+                    <div id="bench">1920 x 1200px 0ms</div>
+                    <p style="font-weight: bolder;">w filtrach jeszcze musze skończyć slider, radio i GAMMA
+                    </p>
+
+                </div>
+            </div>
+
+            </section>
         </div>
-    </form>
-    <img id="img" src="" alt="Image to be sent" />
-    <button id="send">Send to storage</button> -->
-    <canvas id="cnv"></canvas>
-    <a id="export" download="exports">Export to file</a>
-    <button id="save">Save</button>
-    <input type="text" name="projectID" id="projectID" placeholder="Insert project name...">
-    <span id="error" class="error"></span>
+    </div>
+    </div>
+
+
+
+    <div class="modalUser">
+        <div class="modalWrapper">
+            <a href="/profile/"><div id="account">Account</div></a>
+            <a href="/projects/"><div id="projects">Projects</div></a>
+            <div id="logout">Log out</div>
+        </div>
+    </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.2.0/fabric.min.js" integrity="sha512-Pdu3zoEng2TLwwjnDne3O7zaeWZfEJHU5B63T+zLtME/wg1zfeSH/1wrtOzOC37u2Y1Ki8pTCdKsnbueOlFlMg==" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
     <script src="./editor.js" type="module"></script>
+    <script src="../js/userPanelJs.js"></script>
     <script type="module">
+        
         // const headlineEl = document.querySelector("#headline");
         // const dropzoneEl = document.querySelector("#dropzone");
         // const formEl = document.querySelector("#form");

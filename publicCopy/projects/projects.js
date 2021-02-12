@@ -6,13 +6,10 @@ function setPID(pid) {
     localStorage.setItem("pid", pid);
 }
 
-
 const onAuth = {
     cb: async () => {
-        const user = firebase.auth().currentUser;
-        avatarImgs.forEach(avatar => {if(user.photoURL) return avatar.src = user.photoURL });
-        usernameEls.forEach(username => username.textContent = user.displayName);
-        const projects = await getProjectsList(user.uid);
+        const uid = firebase.auth().currentUser.uid;
+        const projects = await getProjectsList(uid);
         const thumbs = await getThumbnails(projects);
         DOM.createThumbs(thumbsParent, thumbs);
     },
@@ -32,16 +29,14 @@ const APP = {
     logOut: () => { wylogujUzytkownika(); },
     createProject: () => {
         localStorage.removeItem("pid");
-        window.location.assign("/editor");
+        redirect("/editor");
     },
 }
 
 //DOM Hooks
 const thumbsParent = document.querySelector("div#thumbs");
-const logoutBtn = document.querySelector("#logout");
-const createProjectBtn = document.querySelector("#createProject");
-const avatarImgs = document.querySelectorAll(".avatar");
-const usernameEls = document.querySelectorAll(".username");
+const logoutBtn = document.querySelector("button#logout");
+const createProjectBtn = document.querySelector("button#createProject");
 
 //DOM Props
 const DOM = {
@@ -65,12 +60,10 @@ const DOM = {
             thumbElement.append(thumbName);
             results.push(thumbElement);
         });
-        parent.prepend(...results);
+        parent.replaceChildren(...results);
     },
 }
 
 //DOM Actions
 logoutBtn.addEventListener("click", APP.logOut);
 createProjectBtn.addEventListener("click", APP.createProject);
-
-

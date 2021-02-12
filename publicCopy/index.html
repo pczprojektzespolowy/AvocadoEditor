@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./img/Avocado.png" type="image/png">
+    <title>Avocado Editor</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navBar">
+        <div class="btns">
+            <button>Sign In</button>
+            <button>Sign Up</button>
+        </div>
+    </nav>
+    <div class="workSpace">
+        <div class="logo">
+            <div class="wrap">
+                <img src="./img/Avocado.png" alt="">
+                <span>AvocadoEditor</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <div class="modalIn">
+        <div class="modalWrapper">
+            <h1>Sign In</h1>
+            <form action="" id="login">
+                <label for="loginEmail">Email: </label>
+                <input type="text" id="loginEmail" autocomplete="email">
+                <label for="loginHaslo">Password: </label>
+                <input type="password" id="loginHaslo" autocomplete="current-password">
+                <span id="loginInfo" class="form-info"></span>
+                <button type="submit">Get in!</button>
+            </form>
+        </div>
+    </div>
+    <div class="modalUp">
+        <div class="modalWrapper">
+            <h1>Sign Up</h1>
+            <form action="" id="rejestracja">
+                <label for="rejestracjaNazwa">Username: </label>
+                <input type="text" id="rejestracjaNazwa" autocomplete="username">
+                <label for="rejestracjaEmail">Email address: </label>
+                <input type="text" id="rejestracjaEmail" autocomplete="email">
+                <label for="rejestracjaHaslo">Password (at least 8 characters): </label>
+                <input type="password" id="rejestracjaHaslo" autocomplete="new-password">
+                <label for="rejestracjaHasloPowtorz">Confirm password: </label>
+                <input type="password" id="rejestracjaHasloPowtorz" autocomplete="new-password">
+                <span id="rejestracjaInfo" class="form-info"></span>
+                <button type="submit">Create!</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="splash "></div>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+<script src="./landing.js" type="module"></script>
+<script src="./js/view.js"></script>
+</body>
+</body>
+</html>

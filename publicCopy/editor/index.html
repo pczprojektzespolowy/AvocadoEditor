@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Edit - Avocado Editor</title>
+</head>
+<body>
+    <h3>Editor</h3>
+    <!-- <h4 id="headline">What happened?</h4>
+    <form id="form">
+        <label for="file">Choose a file</label>
+        <input type="file" name="file" id="file" accept=".png, .jpg" />
+        <div id="dropzone" class="dropzone">
+            <p>Or drop it here</p>
+        </div>
+    </form>
+    <img id="img" src="" alt="Image to be sent" />
+    <button id="send">Send to storage</button> -->
+    <canvas id="cnv"></canvas>
+    <a id="export" download="exports">Export to file</a>
+    <button id="save">Save</button>
+    <input type="text" name="projectID" id="projectID" placeholder="Insert project name...">
+    <span id="error" class="error"></span>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.2.0/fabric.min.js" integrity="sha512-Pdu3zoEng2TLwwjnDne3O7zaeWZfEJHU5B63T+zLtME/wg1zfeSH/1wrtOzOC37u2Y1Ki8pTCdKsnbueOlFlMg==" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
+    <script src="./editor.js" type="module"></script>
+    <script type="module">
+        // const headlineEl = document.querySelector("#headline");
+        // const dropzoneEl = document.querySelector("#dropzone");
+        // const formEl = document.querySelector("#form");
+        // const fileInput = document.querySelector("#file");
+        // const imgEl = document.querySelector("#img");
+        // const sendBtn = document.querySelector("#send");
+
+        // function cancelDefault(e){
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        // }
+        
+        // formEl.addEventListener("dragenter", cancelDefault);
+        // formEl.addEventListener("dragleave", cancelDefault);
+        // formEl.addEventListener("dragover", cancelDefault);
+        // formEl.addEventListener("drop", cancelDefault);
+
+        // formEl.addEventListener("dragenter", e => {
+        //     headlineEl.textContent = "Just drop it";
+        // });
+        // formEl.addEventListener("dragleave", e => {
+        //     headlineEl.textContent = "Come back!";
+        // });
+
+        // formEl.addEventListener("drop", e => {
+        //     const file = e.dataTransfer.files[0];
+        //     loadImgFromFile(file);
+        // });
+        // fileInput.addEventListener("input", e => {
+        //     const file = e.currentTarget.files[0];
+        //     loadImgFromFile(file);
+        // });
+
+        // function loadImgFromFile(file){
+        //     const fileReader = new FileReader();
+        //     fileReader.readAsDataURL(file);
+        //     fileReader.onloadend = (e) => {
+        //         const data = e.currentTarget.result;
+        //         imgEl.src = data;
+        //         console.log("IMAGE DATA: ", data);
+        //     }
+        // }
+
+        // sendBtn.addEventListener("click", e => {
+        //     sendThumbnail("test", {width: 50, height: 30});
+        //     //sendImage("test");
+        // });
+
+        // function sendThumbnail(name, dim){
+        //     const { width, height} = dim;
+        //     const osc = new OffscreenCanvas(width,height);
+        //     const c = osc.getContext("2d");
+        //     c.drawImage(imgEl,0,0,osc.width,osc.height);
+        //     osc.convertToBlob().then(data => {
+        //         const dataUrl = URL.createObjectURL(data);
+        //         firebase.storage().ref().child(`${firebase.auth().currentUser.uid}/thumbs/${name}`).put(data);
+        //     });
+        // }
+
+        // function sendImage(name){
+        //     const styles = getComputedStyle(imgEl);
+        //     const width = styles.getPropertyValue("width");
+        //     const height = styles.getPropertyValue("height");
+        //     const osc = new OffscreenCanvas(+(width.substring(0,width.length-2)),+(height.substring(0,height.length-2)));
+        //     const c = osc.getContext("2d");
+        //     c.drawImage(imgEl,0,0,osc.width,osc.height);
+        //     osc.convertToBlob().then(data => {
+        //         const dataUrl = URL.createObjectURL(data);
+        //         firebase.storage().ref().child(`${firebase.auth().currentUser.uid}/${name}`).put(data);
+        //     });
+        // }
+    </script>
+</body>
+</html>

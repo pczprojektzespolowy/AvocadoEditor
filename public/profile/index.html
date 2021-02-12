@@ -2,16 +2,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="profile.css">
     <title>Profile - Avocado Editor</title>
 </head>
 <body>
+
+
+    <div class="container">
+        <nav class="navBar">
+            <div class="userPanel">
+                <div class="userImg">
+                    <img id="avatar" class="avatar" src="/img/avatarPlaceholder.png" alt="userImg">
+                </div>
+                <div>
+                    <span class="userName username"></span>
+                </div>
+            </div>
+        </nav>
+        <div class="workSpace">
+            <section class="userData">
+
+                <div class="imgContainer">
+                    <img id="avatar" class="avatar" src="/img/avatarPlaceholder.png">
+                </div>
+                <div class="userInfo">
+                    <h1>Account information</h1>
+                    <p>Name: <span id="username" class="username"></span></p>
+                    <p>Email: <span id="email"></span></p>
+                </div>
+                <form>
+                    <input type="file" name="avatarFile" id="avatarFile" accept="image/*">
+                    <input type="submit" value="Upload Avatar!" id="avatarUpload" />
+                    <span id="avatarInfo"></span>
+                </form>
+                <form class="userInfoForm" action="#">
+                    <h2>Change password:</h2>
+                    <label for="newPassword">New password:</label>
+                    <input type="password" id="newPassword">
+                    <label for="confirmPassword">Confirm password:</label>
+                    <input type="password" id="confirmPassword">
+                    <span id="passwordInfo"></span>
+                    <button id="updatePassword">Submit</button>
+                </form>
+                <div class="userDelete">
+                    <h2>Delete account</h2>
+                    <p>Operation cannot be undone!</p>
+                    <button id="deleteUser">Delete</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <div class="modalUser">
+        <div class="modalWrapper">
+            <a href="/projects"><div id="projects">Projects</div></a>
+            <a href="/editor"><div id="editor">Editor</div></a>
+            <div id="logout">Log out</div>
+        </div>
+    </div>
+
     
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
-
-    <script src="./js/firebase.js"></script>
-    <script src="./js/auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
     <script src="./profile.js" type="module"></script>
+    <script src="../js/userPanelJs.js"></script>
 </body>
 </html>

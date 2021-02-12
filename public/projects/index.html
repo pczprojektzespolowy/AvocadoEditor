@@ -7,15 +7,43 @@
     <title>Projects - Avocado Editor</title>
 </head>
 <body>
-    <h2>Projects</h2>
-    <div id="thumbs" class="thumbs-container thumbs-wrapper"></div>
-    <button id="logout">Wyloguj</button>
-    <button id="createProject">Utworz projekt</button>
+
+    <div class="container">
+        <nav class="navBar">
+            <h1>Recent projects</h1>
+            <div class="userPanel">
+                <div class="userImg">
+                    <img id="avatar" class="avatar" src="/img/avatarPlaceholder.png" alt="userImg" />
+                </div>
+                <div>
+                    <span class="userName username"></span>
+                </div>
+            </div>
+        </nav>
+        <div class="workSpace">
+            <div>
+                <div class="containerRecent thumbs-container thumbs-wrapper" id="thumbs">
+
+                <div class="add" id="createProject"><span class="plus">+</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modalUser">
+        <div class="modalWrapper">
+            <a href="/profile/"><div id="account">Account</div></a>
+            <div id="logout">Log out</div>
+        </div>
+    </div>
+
     <!--MANDATORY SCRIPTS-->
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js"></script>
     <!--CUSTOM SCRIPTS-->
     <script src="./projects.js" type="module"></script>
+    <script src="../js/userPanelJs.js"></script>
 </body>
 </html>

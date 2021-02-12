@@ -1,7 +1,3 @@
-import { redirect } from "./firebase.js";
-
-export const REQUIRES_RECENT_LOGIN = "auth/requires-recent-login"
-
 //SESJA
 export async function zarejestrujUzytkownika(nazwa, email, haslo){
     const info = await firebase.auth().createUserWithEmailAndPassword(email, haslo)
@@ -23,7 +19,7 @@ export async function zalogujUzytkownika(email, haslo){
                 uzytkownik.user.sendEmailVerification();
                 throw Error("Confirm your email address!");
             }
-            window.location.assign("/projects");
+            window.location.assign("/projects.html");
             return "";
         }).catch(blad => blad.message);
     return info;
@@ -32,7 +28,7 @@ export async function zalogujUzytkownika(email, haslo){
 export function wylogujUzytkownika(){
     firebase.auth().signOut()
         .then(() => {
-            redirect('/');
+            window.location.assign("/");
         })
         .catch((error) => ({tekst: blad.message}))
 }
@@ -58,19 +54,3 @@ export function walidujEmail(email){
 export function walidujHaslo(haslo, haslo2, dlugosc){
         return haslo.length >= dlugosc && haslo === haslo2;
     }
-
-export async function updateUserPassword(newPassword){
-    const user = firebase.auth().currentUser;
-    try {
-        const res = await user.updatePassword(newPassword);
-        return res;
-    } catch (error) {
-        if(error.code === REQUIRES_RECENT_LOGIN) wylogujUzytkownika()
-        throw error
-    }
-}
-
-export async function deleteUser(){
-    const user = firebase.auth().currentUser;
-    return await user.delete();
-}

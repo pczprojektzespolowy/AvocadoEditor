@@ -1,5 +1,4 @@
 import { init, redirect } from "../js/firebase.js";
-import { wylogujUzytkownika } from "../js/auth.js";
 import { getProjectsList, getProject, updateProject } from "../js/storage.js";
 
 const state = {
@@ -9,8 +8,6 @@ const state = {
 
 const onAuth = { 
     cb: async () => {
-        DOM.setUserName();
-        avatarImgs.forEach(avatar => { if(firebase.auth().currentUser.photoURL) return avatar.src = firebase.auth().currentUser.photoURL });
         const {pid} = state;
         if(pid){
             const projectJSON = await getProject(pid);
@@ -19,7 +16,7 @@ const onAuth = {
             pidInput.disabled = true;
         } else {
             //New project
-            const circle = new fabric.Circle({radius: 20});
+            const circle = new fabric.Circle({radius: 50});
             c.add(circle);
         }
     },
@@ -35,19 +32,13 @@ const onNonAuth = {
 init(onAuth, onNonAuth);
 
 //DOM Hooks
-
-const workSpace = document.querySelector("#workSpace");
-
 const canvasElement = document.querySelector("canvas#cnv");
-canvasElement.width = 60;
-canvasElement.height = 60;
+canvasElement.width = window.innerWidth;
+canvasElement.height = window.innerHeight;
 const saveBtn = document.querySelector("button#save");
 const pidInput = document.querySelector("input#projectID");
 const errorText = document.querySelector("span#error");
 const exportBtn = document.querySelector("#export");
-const avatarImgs = document.querySelectorAll(".avatar");
-const usernameElement = document.querySelector("#username");
-
 
 //DOM Props
 const DOM = {
@@ -70,12 +61,6 @@ const DOM = {
     },
     setError: (err) => {
         errorText.textContent = err;
-     },
-     setUserName: () => {
-         const user = firebase.auth().currentUser
-         if(user.displayName){
-            usernameElement.textContent = user.displayName;
-         }
      }
 };
 
@@ -107,19 +92,3 @@ const APP = {
         updateProject(pid, canvas);
     }
 };
-
-//Accordion 
-// const accordion = document.querySelectorAll("#accordion .contentBox");
-// console.log(accordion)
-
-// for(let i = 0; i<accordion.length; i++){
-//     accordion[i].addEventListener('click', function(){
-//         this.classList.add('active')
-//     })
-// }
-
-
-
-//Logout - sprawdzic czy to jest poprawnie zrobi - Gitarka zrobione :)
-const loBtn = document.querySelector("#logout");
-loBtn.addEventListener("click", wylogujUzytkownika);

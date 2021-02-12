@@ -21,18 +21,18 @@ export function init(onAuth, onNonAuth) {
   let onNonAuthDone = false;
   firebase.initializeApp(_firebaseConfig,/* appName */);
   firebase.auth().onAuthStateChanged(user => {
-      firebase.auth().useDeviceLanguage();
-      if(user){
-        if(!onAuthDone){
-          onAuth.cb();
-          onAuthDone = !onAuth.once;
-        }
-      } else {
-        if(!onNonAuthDone){
-          onNonAuth.cb();
-          onNonAuthDone = !onNonAuth.once;
-        }
+    firebase.auth().useDeviceLanguage();
+    if(user){
+      if(!onAuthDone){
+        onAuth.cb();
+        onAuthDone = !onAuth.once;
       }
+    } else {
+      if(!onNonAuthDone){
+        onNonAuth.cb();
+        onNonAuthDone = !onNonAuth.once;
+      }
+    }
   })
 }
 export function redirect(path){

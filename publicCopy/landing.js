@@ -3,16 +3,13 @@ import { zalogujUzytkownika, zarejestrujUzytkownika, walidujRejestracje } from "
 
 const onAuth = {
     cb: () => {
-        const user = firebase.auth().currentUser;
-        if(user.emailVerified){
-            redirect("/projects");
-        }
+        redirect("/projects");
     },
     once: false,
 };
 const onNonAuth = {
     cb: () => {
-        //Not needed for now
+        redirect('/');
     },
     once: true,
 };

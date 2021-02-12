@@ -25,7 +25,6 @@ export async function getProject(pid) {
     const url = await projectRef.getDownloadURL();
     const res = await fetch(url);
     const json = await res.json();
-    console.log("PROJECT", json);
     return json;
 }
 
@@ -62,30 +61,3 @@ export async function updateProject(pid, canvas){
     await updateCanvas(pid, canvas);
     await updateThumbnail(pid, canvas.getElement());
 }
-
-export async function updateUserAvatar(file){
-    const user = firebase.auth().currentUser;
-    const ref = firebase.storage().ref(`${user.uid}/avatar/`)
-
-    try {
-        console.log("UPDATING PHOTO", file);
-    
-        const snapshot = await ref.put(file, {name: "avatar"});
-    
-        const url = await snapshot.ref.getDownloadURL();
-
-        user.updateProfile({
-            photoURL: url,
-        })
-    } catch (error) {
-        console.log("AVATAR UPDATE ERROR", error);
-    }
-}
-
-// export async function getUserAvatar(uid){
-//     const ref = firebase.storage().ref(`${uid}/avatar`);
-//     const url = await ref.getDownloadURL();
-//     const res = await fetch(url);
-//     console.log(ref, url, res);
-//     return res;
-// }
